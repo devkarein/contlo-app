@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -12,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,7 +62,7 @@ fun PullRequestItem(data: PRUiModel, modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(1f)
-                .padding(vertical = 4.dp, horizontal = 8.dp),
+                .padding(vertical = 8.dp, horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
@@ -76,7 +82,8 @@ fun PullRequestItem(data: PRUiModel, modifier: Modifier = Modifier) {
                 )
             }
             GitUserProfileView(
-                modifier = Modifier.widthIn(min = 100.dp),
+                modifier = Modifier
+                    .widthIn(min = 100.dp),
                 username = data.userName,
                 imageUrl = data.imageUrl,
             )
@@ -87,7 +94,7 @@ fun PullRequestItem(data: PRUiModel, modifier: Modifier = Modifier) {
 @Composable
 fun GitUserProfileView(username: String, imageUrl: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(start = 2.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -115,17 +122,17 @@ fun PROpenAndCloseView(start: String, end: String, modifier: Modifier = Modifier
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        LabeledTextView(label = "Raised : ", text = start)
-        LabeledTextView(label = "Closed : ", text = end)
+        LabeledTextView(label = "Raised", text = start)
+        LabeledTextView(label = "Closed", text = end)
     }
 }
 
 @Composable
 fun LabeledTextView(label: String, text: String, modifier: Modifier = Modifier) {
-    Row(
+    Column(
         modifier = modifier,
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.Bottom
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = label,
@@ -148,7 +155,7 @@ fun LabeledTextView(label: String, text: String, modifier: Modifier = Modifier) 
 
 
 val mockPr = PRUiModel(
-    id = "1",
+    id = 1,
     title = "Critial fix for accounts screen",
     imageUrl = "https://i.stack.imgur.com/Trj9n.jpg",
     userName = "iamskay",
@@ -181,5 +188,52 @@ fun UserProfilePreview() {
             username = "Sachin Tendulkar",
             imageUrl = "https://i.stack.imgur.com/Trj9n.jpg"
         )
+    }
+}
+
+
+@Preview
+@Composable
+fun LoadingView() {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator()
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Please wait ...")
+        }
+    }
+}
+
+@Composable
+fun ErrorContainerView(
+    modifier: Modifier = Modifier,
+    onRetry: () -> Unit = {}
+) {
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(text = "Something went wrong!\nPlease retry..", textAlign = TextAlign.Center)
+            Spacer(modifier = Modifier.height(24.dp))
+            Button(onClick = onRetry) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    text = "Retry",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
     }
 }
