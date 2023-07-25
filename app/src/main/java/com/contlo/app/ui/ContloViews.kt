@@ -1,7 +1,5 @@
 package com.contlo.app.ui
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,14 +30,16 @@ import com.contlo.app.ui.theme.ContloAppTheme
 import java.util.Date
 
 @Composable
-fun ListOfPullRequests(prItems: List<PRUiModel>, modifier: Modifier) {
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(8.dp)
-    ) {
-        items(items = prItems, key = { it.id }) {
-            PullRequestItem(data = it)
+fun ListOfPullRequests(prItems: List<PRUiModel>, modifier: Modifier = Modifier) {
+    Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
+        LazyColumn(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(8.dp)
+        ) {
+            items(items = prItems) {
+                PullRequestItem(data = it)
+            }
         }
     }
 }
@@ -48,12 +48,17 @@ fun ListOfPullRequests(prItems: List<PRUiModel>, modifier: Modifier) {
 fun PullRequestItem(data: PRUiModel, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
-            .padding(horizontal = 12.dp)
-            .fillMaxWidth(1f)
-            .border(border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary))
-            .clip(RoundedCornerShape(8.dp)),
+            .padding(horizontal = 4.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth(1f),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Row(modifier = Modifier.fillMaxWidth(1f), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(vertical = 4.dp, horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -108,7 +113,7 @@ fun GitUserProfileView(username: String, imageUrl: String, modifier: Modifier = 
 fun PROpenAndCloseView(start: String, end: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         LabeledTextView(label = "Raised : ", text = start)
         LabeledTextView(label = "Closed : ", text = end)
@@ -120,6 +125,7 @@ fun LabeledTextView(label: String, text: String, modifier: Modifier = Modifier) 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Bottom
     ) {
         Text(
             text = label,
@@ -151,7 +157,7 @@ val mockPr = PRUiModel(
 )
 
 
-@Preview
+//@Preview
 @Composable
 fun LabeledTextPreview() {
     ContloAppTheme {
@@ -167,7 +173,7 @@ fun PrItemPreview() {
     }
 }
 
-@Preview
+//@Preview
 @Composable
 fun UserProfilePreview() {
     ContloAppTheme {

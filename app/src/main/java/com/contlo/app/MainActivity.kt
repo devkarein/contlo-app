@@ -3,12 +3,10 @@ package com.contlo.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.contlo.app.ui.PullRequestItem
+import androidx.compose.ui.tooling.preview.Preview
+import com.contlo.app.ui.ListOfPullRequests
 import com.contlo.app.ui.mockPr
 import com.contlo.app.ui.theme.ContloAppTheme
 
@@ -26,6 +24,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(modifier: Modifier = Modifier) {
     ContloAppTheme {
-        PullRequestItem(data = mockPr)
+        ListOfPullRequests(
+            List(100) { index ->
+                mockPr.copy(id = index.toString(), userName = index.toString())
+            })
+        
+    }
+}
+
+@Preview
+@Composable
+fun MainAppPreview() {
+    ContloAppTheme {
+        ListOfPullRequests(
+            List(100) { index ->
+                mockPr.copy(id = index.toString(), userName = index.toString())
+            })
+
     }
 }
